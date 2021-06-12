@@ -13,8 +13,8 @@ class Messages {
 
   static var welcomeStrings = [
     'Hello!',
-    'Bonjour!',
-    'Howdy!',
+    // 'Bonjour!',
+    // 'Howdy!',
     'Welcome!',
     'Hey There!'
   ];

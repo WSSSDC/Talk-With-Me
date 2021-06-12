@@ -26,7 +26,6 @@ class SessionHandler {
 
   static startSession(TalkingItem item) {
     OpenAIHandler.currentText = OpenAIHandler.defaultPrompt + item.userPrompt + '\n' + 'Sam: ' + item.aiPrompt + '\n' + 'User:';
-    print(OpenAIHandler.currentText);
     Messages.addMessage(Message(false, item.aiPrompt));
     _status = TalkStatus.user_talking;
     notifyListeners();
