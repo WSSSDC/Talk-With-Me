@@ -21,6 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_tts: ^3.1.0
+  noise_meter: ^2.0.0
   audio_visualizer: ^0.1.1
   sound_stream: ^0.2.0
   speech_to_text: ^3.2.0

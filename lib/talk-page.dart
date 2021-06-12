@@ -1,11 +1,11 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'status-handler.dart';
 import 'visualizer.dart';
 import 'visualizer-input.dart';
 import 'package:async/async.dart';
+import 'openai.dart';
 
 
 class TalkPage extends StatefulWidget {
@@ -17,22 +17,27 @@ class TalkPage extends StatefulWidget {
 
 class _TalkPageState extends State<TalkPage> {
   SpeechToText speech;
-  bool speechAvailable = false;
 
   @override
   void initState() {
+    CurrentStatus.addListener(update);
     MicInput.setup();
     setupSST();
     super.initState();
+  }
+
+  update() {
+    if(mounted) setState(() {});
   }
 
   RestartableTimer timer;
   
   void setupSST() async {
     speech = SpeechToText();
-    speechAvailable = await speech.initialize( onStatus: (s) => print(s), onError: (e) => print(e));
+    bool speechAvailable = await speech.initialize( onStatus: (s) {}, onError: (e) => print(e));
     if ( speechAvailable ) {
-        speech.listen( onResult: resultListener );
+      CurrentStatus.status = TalkStatus.user_talking;
+      speech.listen( onResult: resultListener );
     }
     else {
         print("The user has denied the use of speech recognition.");
@@ -40,11 +45,12 @@ class _TalkPageState extends State<TalkPage> {
   }
 
   resultListener(SpeechRecognitionResult result) {
-    print(result.recognizedWords);
     if(timer == null) {
       timer = RestartableTimer(Duration(milliseconds: 900), () {
-        speech.stop();
-        //MicInput.micStream.stop();
+        speech.cancel();
+        CurrentStatus.status = TalkStatus.fetching_response;
+        print(result.recognizedWords);
+        OpenAIHandler.complete(result.recognizedWords);
       });
     }
     timer.reset();
