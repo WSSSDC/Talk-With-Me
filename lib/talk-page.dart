@@ -81,43 +81,46 @@ class _TalkPageState extends State<TalkPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          SafeArea(
-            bottom: false,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(15.0, 25.0, 15.0, 0),
-              child: GestureDetector(
-                onTap: endSession,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                        width: 70,
-                        height: 40,
-                        child: Card(
-                          elevation: 5.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'End',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w300
-                              ),
-                            )
-                          ),
-                          color: Colors.red,
-                        )
-                  ),
+          Column(
+            children: [
+              MessagesView(),
+              Visualizer(),
+              Container(height: 10)
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 5.0, 15.0, 0),
+            child: SafeArea(
+              child: Align(
+                  alignment: Alignment.topRight,
+                  child: SizedBox(
+                    width: 70,
+                    height: 40,
+                    child: GestureDetector(
+                      onTap: endSession,
+                      child: Card(
+                        elevation: 5.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'End',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w300
+                            ),
+                          )
+                        ),
+                        color: Colors.red,
+                      ),
+                    )
                 ),
               ),
             ),
           ),
-          MessagesView(),
-          Visualizer(),
-          Container(height: 10)
         ],
       ),
     );

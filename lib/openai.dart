@@ -26,7 +26,7 @@ class OpenAIHandler {
 
   static _playResponse() async {
     flutterTts = FlutterTts();
-    await flutterTts.awaitSpeakCompletion(true);
+    //await flutterTts.awaitSpeakCompletion(true);
     await flutterTts.speak(aiResponse);
     SessionHandler.status = TalkStatus.user_talking;
   }
