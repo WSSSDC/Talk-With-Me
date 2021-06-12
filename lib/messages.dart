@@ -1,5 +1,14 @@
+import "dart:math";
+
 class Messages {
   static List<Function> listeners = [];
+  static var welcomeStrings = [
+    'Hello!',
+    'Bonjour!',
+    'Howdy!',
+    'Welcome!',
+    'Hey There'
+  ];
 
   static addListener(Function update) {
     listeners.add(update);
@@ -10,7 +19,7 @@ class Messages {
   }
 
   static List<Message> get messages => _messages;
-  static set messages (List<Message> newlist) {
+  static set messages(List<Message> newlist) {
     _messages = newlist;
     notifyListeners();
   }
@@ -21,7 +30,7 @@ class Messages {
   }
 
   static List<Message> _messages = [
-    Message(false, 'Hello!')
+    Message(false, welcomeStrings[new Random().nextInt(welcomeStrings.length)])
   ];
 }
 
