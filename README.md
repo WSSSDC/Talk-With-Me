@@ -8,14 +8,15 @@ We saw the capabilities of GPT-3 in the news and wanted to leverage its power fo
 # :building_construction: How we built it
 * Designed Mockups in Adobe XD
 * Created app in flutter
-* Used gpt_3_dart API for GPT-3 integration
-* Used [NAME] for audio visializations
-* Used [NAME] for speech-to-text
-* Used [NAME] for text-to-speech
+* Used `gpt_3_dart` API for GPT-3 integration
+* Used `[NAME]` for audio visializations
+* Used `[NAME]` for speech-to-text
+* Used `[NAME]` for text-to-speech
 
 # :stop_sign: Challenges we ran into
 
 #	:white_check_mark: Accomplishments that we're proud of
+* Switching from a game to an app, since we thought an app would be a more accessible form factor
 
 # :open_book: What we learned
 
