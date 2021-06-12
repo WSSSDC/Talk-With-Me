@@ -5,6 +5,7 @@ import 'talk-group.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
+  
   runApp(MyApp());
 }
 
