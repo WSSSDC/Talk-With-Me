@@ -50,7 +50,7 @@ class _TalkPageState extends State<TalkPage> {
     }
     else {
         print("The user has denied the use of speech recognition.");
-    }  
+    }
   }
 
   resultListener(SpeechRecognitionResult result) {
@@ -58,19 +58,22 @@ class _TalkPageState extends State<TalkPage> {
     userInput = userInput.length < result.recognizedWords.length ? result.recognizedWords : userInput;
     if(timer == null) {
       timer = RestartableTimer(Duration(milliseconds: 750), () {
-        print("CANCEL");
-        speech.cancel();
-        SessionHandler.status = TalkStatus.fetching_response;
-        Messages.addMessage(Message(true, userInput));
-        OpenAIHandler.complete(userInput);
-        userInput = '';
+        print(result.recognizedWords.toUpperCase().replaceAll(' ', ''));
+        if(userInput.toUpperCase().replaceAll(' ', '') != "CLOSE") {
+          speech.cancel();
+          SessionHandler.status = TalkStatus.fetching_response;
+          Messages.addMessage(Message(true, userInput));
+          OpenAIHandler.complete(userInput);
+          userInput = '';
+        } else {
+          endSession();
+        }
       });
     }
     timer.reset();
   }
 
   endSession() {
-    print("END SESSION");
     speech.cancel();
     userInput = '';
     Messages.messages = [];

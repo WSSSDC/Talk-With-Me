@@ -4,7 +4,6 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'messages.dart';
 import 'profile-data.dart';
 import 'status-handler.dart';
-import 'dart:math';
 
 class OpenAIHandler {
   static OpenAI openAI = new OpenAI(apiKey: FlutterConfig.get('OPENAI_API_KEY'));
@@ -13,12 +12,14 @@ class OpenAIHandler {
   static String currentText = '';
   static String aiResponse = '';
   static FlutterTts flutterTts;
+  static List<String> endcodes = ["\n", "Sam:", "User:", "."];
 
   static complete(String response) async {
     currentText += response + "\Sam:";
     String generated = await openAI.complete(currentText, 40);
-    int end = min(min(generated.indexOf('\n'), generated.indexOf('Sam:')), generated.indexOf('User:'));
-    aiResponse = generated.substring(0, end == -1 ? generated.length : end);
+    aiResponse = generated;
+    endcodes.forEach((e) => removeAt(e));
+
     if(aiResponse.substring(0,1) == ' ') aiResponse = aiResponse.replaceFirst(' ', '');
     currentText += aiResponse + '\n' + 'User:';
     Messages.addMessage(Message(false, aiResponse));
@@ -31,4 +32,12 @@ class OpenAIHandler {
     await flutterTts.speak(aiResponse);
     SessionHandler.status = TalkStatus.user_talking;
   }
+
+  static removeAt(String match) {
+    int i = aiResponse.indexOf(match);
+    if (i > 0) {
+      aiResponse = aiResponse.substring(0, i);
+    }
+  }
 }
+
