@@ -7,11 +7,10 @@ We saw the capabilities of GPT-3 in the news and wanted to leverage its power fo
 
 # :building_construction: How we built it
 * Designed Mockups in Adobe XD
-* Created app in flutter
+* Talk With Me was made using Flutter with the help of the following libraries:
 * Used `gpt_3_dart` API for GPT-3 integration
-* Used `[NAME]` for audio visializations
-* Used `[NAME]` for speech-to-text
-* Used `[NAME]` for text-to-speech
+* Used `speech_to_text` for speech-to-text
+* Used `flutter_tts` for text-to-speech
 
 # :stop_sign: Challenges we ran into
 
