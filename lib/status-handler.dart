@@ -10,9 +10,11 @@ class CurrentStatus {
   }
 
   static get status => _status;
-  static set status (TalkStatus new_status) {
-    _status = new_status;
-    notifyListeners();
+  static set status (TalkStatus newStatus) {
+    if(_status != newStatus) {
+      _status = newStatus;
+      notifyListeners();
+    }
   }
 
   static TalkStatus _status = TalkStatus.user_talking;

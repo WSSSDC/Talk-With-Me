@@ -1,0 +1,36 @@
+class Messages {
+  static List<Function> listeners = [];
+
+  static addListener(Function update) {
+    listeners.add(update);
+  }
+
+  static notifyListeners() {
+    listeners.forEach((e) => e());
+  }
+
+  static List<Message> get messages => _messages;
+  static set messages (List<Message> newlist) {
+    _messages = newlist;
+    notifyListeners();
+  }
+
+  static addMessage(Message msg) {
+    _messages.add(msg);
+    notifyListeners();
+  }
+
+  static List<Message> _messages = [
+    Message(false, 'Hello!')
+  ];
+}
+
+class Message {
+  bool fromUser;
+  String message;
+
+  Message(bool _fromUser, String _message) {
+    this.fromUser = _fromUser;
+    this.message = _message;
+  }
+}
