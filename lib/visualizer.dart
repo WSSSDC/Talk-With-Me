@@ -12,7 +12,7 @@ class Visualizer extends StatelessWidget {
     return Container(
       height: 110,
       child: StreamBuilder(
-        stream: CurrentStatus.status == TalkStatus.user_talking ? MicInput.noiseStream : null,
+        stream: SessionHandler.status == TalkStatus.user_talking ? MicInput.noiseStream : null,
         builder: (context, snapshot) {
           if (snapshot.data == null) return Container();
 

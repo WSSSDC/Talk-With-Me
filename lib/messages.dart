@@ -25,12 +25,12 @@ class Messages {
   }
 
   static addMessage(Message msg) {
-    _messages.add(msg);
+    _messages.insert(0, msg);
     notifyListeners();
   }
 
   static List<Message> _messages = [
-    Message(false, welcomeStrings[new Random().nextInt(welcomeStrings.length)])
+    Message(false, welcomeStrings[new Random().nextInt(welcomeStrings.length - 1)])
   ];
 }
 

@@ -1,4 +1,9 @@
-class CurrentStatus {
+import 'package:talk_with_me/messages.dart';
+
+import 'categories.dart';
+import 'openai.dart';
+
+class SessionHandler {
   static List<Function> listeners = [];
 
   static addListener(Function update) {
@@ -18,11 +23,19 @@ class CurrentStatus {
   }
 
   static TalkStatus _status = TalkStatus.user_talking;
+
+  static startSession(TalkingItem item) {
+    OpenAIHandler.currentText = OpenAIHandler.defaultPrompt + item.userPrompt + '\n' + 'Sam: ' + item.aiPrompt + '\n' + 'User:';
+    Messages.addMessage(Message(false, item.aiPrompt));
+    _status = TalkStatus.user_talking;
+    notifyListeners();
+  }
   
 }
 
 enum TalkStatus {
   user_talking,
   fetching_response,
-  ai_talking
+  ai_talking,
+  not_running
 }

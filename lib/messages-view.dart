@@ -9,6 +9,7 @@ class MessagesView extends StatefulWidget {
 }
 
 class _MessagesViewState extends State<MessagesView> {
+  ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
@@ -17,8 +18,8 @@ class _MessagesViewState extends State<MessagesView> {
   }
 
   update() {
-    print(Messages.messages);
     if(mounted) setState(() {});
+    _scrollController.animateTo(0.0, duration: Duration(milliseconds: 100), curve: Curves.easeInOut);
   }
 
   @override
@@ -26,8 +27,16 @@ class _MessagesViewState extends State<MessagesView> {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: ListView(
-          children: Messages.messages.map((e) => MessageText(e.fromUser, e.message)).toList(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ListView(
+              reverse: true,
+              shrinkWrap: true,
+              controller: _scrollController,
+              children: Messages.messages.map((e) => MessageText(e.fromUser, e.message)).toList(),
+            ),
+          ],
         ),
       ),
     );
@@ -42,8 +51,7 @@ class MessageText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return SizedBox(
-      child: Row(
+    return Row(
         mainAxisAlignment: fromUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
           Container(
@@ -58,7 +66,6 @@ class MessageText extends StatelessWidget {
             ),
           )
         ],
-      ),
     );
   }
 }

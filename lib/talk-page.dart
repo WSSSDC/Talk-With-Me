@@ -20,31 +20,32 @@ class TalkPage extends StatefulWidget {
 class _TalkPageState extends State<TalkPage> {
   SpeechToText speech;
   String userInput = '';
-  bool speechAvailable = true;
+  bool speechAvailable = false;
   RestartableTimer timer;
 
   @override
   void initState() {
-    CurrentStatus.addListener(update);
-    MicInput.setup();
     initSTT();
+    SessionHandler.addListener(update);
+    MicInput.setup();
     super.initState();
   }
 
   update() {
     if(mounted) setState(() {});
-    if (CurrentStatus.status == TalkStatus.user_talking) startSTT();
+    if (SessionHandler.status == TalkStatus.user_talking) startSTT();
   }
 
   void initSTT() async {
+    SessionHandler.status = TalkStatus.user_talking;
     speech = SpeechToText();
-    speechAvailable = await speech.initialize( onStatus: (s) => print(s), onError: (e) => print(e));
+    if(!speechAvailable)
+    speechAvailable = await speech.initialize(onStatus: (s) => print('status: ' + s), onError: (e) => print(e), debugLogging: true);
     update();
   }
   
   void startSTT() {
     if (speechAvailable) {
-      CurrentStatus.status = TalkStatus.user_talking;
       speech.listen(onResult: resultListener);
     }
     else {
@@ -56,9 +57,9 @@ class _TalkPageState extends State<TalkPage> {
     print(result.recognizedWords);
     userInput = userInput.length < result.recognizedWords.length ? result.recognizedWords : userInput;
     if(timer == null) {
-      timer = RestartableTimer(Duration(milliseconds: 400), () {
+      timer = RestartableTimer(Duration(milliseconds: 750), () {
         speech.cancel();
-        CurrentStatus.status = TalkStatus.fetching_response;
+        SessionHandler.status = TalkStatus.fetching_response;
         Messages.addMessage(Message(true, userInput));
         OpenAIHandler.complete(userInput);
         userInput = '';
@@ -67,11 +68,53 @@ class _TalkPageState extends State<TalkPage> {
     timer.reset();
   }
 
+  endSession() {
+    speech.cancel();
+    userInput = '';
+    Messages.messages = [];
+    SessionHandler.status = TalkStatus.not_running;
+    if(OpenAIHandler.flutterTts != null)
+    OpenAIHandler.flutterTts.stop();
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
+          SafeArea(
+            bottom: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(15.0, 25.0, 15.0, 0),
+              child: GestureDetector(
+                onTap: endSession,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                        width: 70,
+                        height: 40,
+                        child: Card(
+                          elevation: 5.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'End',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300
+                              ),
+                            )
+                          ),
+                          color: Colors.red,
+                        )
+                  ),
+                ),
+              ),
+            ),
+          ),
           MessagesView(),
           Visualizer(),
           Container(height: 10)

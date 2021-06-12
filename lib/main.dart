@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'categories.dart';
 import 'talk-group.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
-  
   runApp(MyApp());
 }
 
@@ -14,14 +14,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //print(FlutterConfig.get('OPENAI_API_KEY'));
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        //brightness: Brightness.dark,
         fontFamily: 'Gotham',
         primarySwatch: Colors.blue,
         textTheme: TextTheme(
           headline1: TextStyle(
             fontSize: 30,
             color: Colors.black,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w400,
             fontFamily: 'Gotham'
           ),
           subtitle1: TextStyle(
@@ -64,10 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Container(height: 20),
-            TalkGroup(),
-            TalkGroup(),
-            TalkGroup(),
-          ],
+          ] + Categories.groups.map((e) => TalkGroup(e)).toList(),
         ),
       ),
     );

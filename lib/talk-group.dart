@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'status-handler.dart';
+import 'categories.dart';
 import 'talk-page.dart';
 
 class TalkGroup extends StatefulWidget {
-  const TalkGroup({ Key key }) : super(key: key);
+  const TalkGroup(this.category, { Key key }) : super(key: key);
+  final Category category;
 
   @override
-  _TalkGroupState createState() => _TalkGroupState();
+  _TalkGroupState createState() => _TalkGroupState(category);
 }
 
 class _TalkGroupState extends State<TalkGroup> {
+  _TalkGroupState(this.category);
+  final Category category;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,7 +25,7 @@ class _TalkGroupState extends State<TalkGroup> {
             Padding(
               padding: const EdgeInsets.fromLTRB(18.0, 0, 0, 0),
               child: Text(
-                'Relationships',
+                category.name,
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
@@ -29,13 +35,9 @@ class _TalkGroupState extends State<TalkGroup> {
         Container(
           height: 140,
           child: ListView(
-            children: [
+            children: <Widget>[
               Container(width: 15),
-              TalkCard(),
-              TalkCard(),
-              TalkCard(),
-              TalkCard()
-            ],
+            ] + category.items.map((e) => TalkCard(e)).toList(),
             scrollDirection: Axis.horizontal,
           ),
         ),
@@ -46,12 +48,14 @@ class _TalkGroupState extends State<TalkGroup> {
 }
 
 class TalkCard extends StatelessWidget {
-  const TalkCard({ Key key }) : super(key: key);
+  const TalkCard(this.talkitem, { Key key }) : super(key: key);
+  final TalkingItem talkitem;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        SessionHandler.startSession(talkitem);
         Navigator.of(context).push(MaterialPageRoute(builder: (_) => TalkPage()));
       },
       child: Container(
@@ -65,7 +69,7 @@ class TalkCard extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                'Test',
+                talkitem.name,
                 style: Theme.of(context).textTheme.subtitle2,
               ),
             ),
