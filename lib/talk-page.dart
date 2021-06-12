@@ -40,7 +40,7 @@ class _TalkPageState extends State<TalkPage> {
     SessionHandler.status = TalkStatus.user_talking;
     speech = SpeechToText();
     //if(!speechAvailable)
-    speechAvailable = await speech.initialize(onStatus: (s) => print('status: ' + s), onError: (e) => print(e), finalTimeout: Duration(hours: 1));
+    speechAvailable = await speech.initialize(onStatus: (s) {}, onError: (e) => print(e), finalTimeout: Duration(hours: 1));
     update();
   }
   
@@ -49,16 +49,14 @@ class _TalkPageState extends State<TalkPage> {
       speech.listen(onResult: resultListener);
     }
     else {
-        print("The user has denied the use of speech recognition.");
+      //print("The user has denied the use of speech recognition.");
     }
   }
 
   resultListener(SpeechRecognitionResult result) {
-    //print(result.recognizedWords);
     userInput = userInput.length < result.recognizedWords.length ? result.recognizedWords : userInput;
     if(timer == null) {
       timer = RestartableTimer(Duration(milliseconds: 750), () {
-        print(result.recognizedWords.toUpperCase().replaceAll(' ', ''));
         if(userInput.toUpperCase().replaceAll(' ', '') != "CLOSE") {
           speech.cancel();
           SessionHandler.status = TalkStatus.fetching_response;
