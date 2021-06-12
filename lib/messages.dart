@@ -7,7 +7,7 @@ class Messages {
     'Bonjour!',
     'Howdy!',
     'Welcome!',
-    'Hey There'
+    'Hey There!'
   ];
 
   static addListener(Function update) {
