@@ -65,9 +65,9 @@ flutter:
   fonts:
     - family: Gotham
       fonts:
-        - asset: fonts/Gotham-Medium.ttf
-        - asset: fonts/Gotham-Thin.ttf
-        - asset: fonts/Gotham-Ultra.ttf
+        - asset: fonts/gohtam/Gotham-Medium.ttf
+        - asset: fonts/gotham/Gotham-Thin.ttf
+        - asset: fonts/gotham/Gotham-Ultra.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
