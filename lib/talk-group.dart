@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'talk-page.dart';
 
 class TalkGroup extends StatefulWidget {
   const TalkGroup({ Key key }) : super(key: key);
@@ -49,19 +50,24 @@ class TalkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 250,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 5.0, 10),
-        child: Card(
-          elevation: 5.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.0),
-          ),
-          child: Center(
-            child: Text(
-              'Test',
-              style: Theme.of(context).textTheme.subtitle2,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => TalkPage()));
+      },
+      child: Container(
+        width: 250,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 5.0, 10),
+          child: Card(
+            elevation: 5.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+            child: Center(
+              child: Text(
+                'Test',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
             ),
           ),
         ),
