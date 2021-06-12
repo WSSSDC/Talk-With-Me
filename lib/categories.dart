@@ -12,8 +12,12 @@ class Categories {
       ..userPrompt = "I'm just went through a hard breakup"
       ..aiPrompt = "Sorry about your breakup. Can you tell me about it?",
       TalkingItem()
-      ..name = 'Issues with Partner'
+      ..name = 'Partner'
       ..userPrompt = "I'm having issues with my partner"
+      ..aiPrompt = "Can you tell me more about the issues you're having?",
+      TalkingItem()
+      ..name = 'Friends'
+      ..userPrompt = "I'm having problems with my friends"
       ..aiPrompt = "Can you tell me more about the issues you're having?"
     ],
     Category()
