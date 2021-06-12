@@ -70,7 +70,7 @@ class TalkCard extends StatelessWidget {
             child: Center(
               child: Text(
                 talkitem.name,
-                style: Theme.of(context).textTheme.subtitle2,
+                style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black),
               ),
             ),
           ),

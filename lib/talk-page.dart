@@ -64,8 +64,10 @@ class _TalkPageState extends State<TalkPage> {
       timer = RestartableTimer(Duration(milliseconds: 750), () {
         if(userInput.toUpperCase().replaceAll(' ', '') != "CLOSE") {
           SessionHandler.status = TalkStatus.fetching_response;
-          speech.cancel();
-          speech = null;
+          if(speech != null) {
+            speech.cancel();
+            speech = null;
+          }
           Messages.addMessage(Message(true, userInput));
           OpenAIHandler.complete(userInput);
           userInput = '';

@@ -8,14 +8,14 @@ import 'status-handler.dart';
 class OpenAIHandler {
   static OpenAI openAI = new OpenAI(apiKey: FlutterConfig.get('OPENAI_API_KEY'));
   static String defaultPrompt = 
-  "Sam: Hi " + ProfileData.first + "! I'm your therapist, Sam. It's so nice to meet you! What would you like to talk about?\n" + (ProfileData.first.isEmpty ? 'User' : ProfileData.first) + ":";
+  ProfileData.voiceName + ": Hi " + ProfileData.first + "! I'm your therapist, " + ProfileData.voiceName + ". It's so nice to meet you! What would you like to talk about?\n" + (ProfileData.first.isEmpty ? 'User' : ProfileData.first) + ":";
   static String currentText = '';
   static String aiResponse = '';
   static FlutterTts flutterTts;
-  static List<String> endcodes = ["\n", "Sam:", (ProfileData.first.isEmpty ? 'User' : ProfileData.first) + ":", "."];
+  static List<String> endcodes = ["\n", ProfileData.voiceName + ":", (ProfileData.first.isEmpty ? 'User' : ProfileData.first) + ":", "."];
 
   static complete(String response) async {
-    currentText += response + "\Sam:";
+    currentText += response + "\n" + ProfileData.voiceName + ":";
     String generated = await openAI.complete(currentText, 40);
     aiResponse = generated;
     endcodes.forEach((e) => removeAt(e));
@@ -28,6 +28,9 @@ class OpenAIHandler {
 
   static _playResponse() async {
     flutterTts = FlutterTts();
+    List<dynamic> voices = await flutterTts.getVoices;
+    print(voices.where((e) => e['locale'].contains('en-')).map((e) => e['locale']));
+    await flutterTts.setVoice(ProfileData.voices[ProfileData.voice]);
     await flutterTts.awaitSpeakCompletion(true);
     await flutterTts.speak(aiResponse);
     if(aiResponse.toUpperCase().contains('BYE')) {
