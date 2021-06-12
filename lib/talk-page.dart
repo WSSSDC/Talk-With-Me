@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'messages-view.dart';
+import 'messages.dart';
 import 'status-handler.dart';
 import 'visualizer.dart';
 import 'visualizer-input.dart';
@@ -18,24 +20,29 @@ class TalkPage extends StatefulWidget {
 class _TalkPageState extends State<TalkPage> {
   SpeechToText speech;
   String userInput = '';
+  bool speechAvailable = true;
+  RestartableTimer timer;
 
   @override
   void initState() {
     CurrentStatus.addListener(update);
     MicInput.setup();
-    setupSST();
+    initSTT();
     super.initState();
   }
 
   update() {
     if(mounted) setState(() {});
+    if (CurrentStatus.status == TalkStatus.user_talking) startSTT();
   }
 
-  RestartableTimer timer;
-  
-  void setupSST() async {
+  void initSTT() async {
     speech = SpeechToText();
-    bool speechAvailable = await speech.initialize( onStatus: (s) {}, onError: (e) => print(e));
+    speechAvailable = await speech.initialize( onStatus: (s) => print(s), onError: (e) => print(e));
+    update();
+  }
+  
+  void startSTT() {
     if (speechAvailable) {
       CurrentStatus.status = TalkStatus.user_talking;
       speech.listen(onResult: resultListener);
@@ -49,11 +56,12 @@ class _TalkPageState extends State<TalkPage> {
     print(result.recognizedWords);
     userInput = userInput.length < result.recognizedWords.length ? result.recognizedWords : userInput;
     if(timer == null) {
-      timer = RestartableTimer(Duration(milliseconds: 500), () {
+      timer = RestartableTimer(Duration(milliseconds: 400), () {
         speech.cancel();
         CurrentStatus.status = TalkStatus.fetching_response;
-        print(userInput);
+        Messages.addMessage(Message(true, userInput));
         OpenAIHandler.complete(userInput);
+        userInput = '';
       });
     }
     timer.reset();
@@ -64,7 +72,7 @@ class _TalkPageState extends State<TalkPage> {
     return Scaffold(
       body: Column(
         children: [
-          Expanded(child: Container()),
+          MessagesView(),
           Visualizer(),
           Container(height: 10)
         ],
