@@ -17,6 +17,7 @@ class TalkPage extends StatefulWidget {
 
 class _TalkPageState extends State<TalkPage> {
   SpeechToText speech;
+  String userInput = '';
 
   @override
   void initState() {
@@ -35,9 +36,9 @@ class _TalkPageState extends State<TalkPage> {
   void setupSST() async {
     speech = SpeechToText();
     bool speechAvailable = await speech.initialize( onStatus: (s) {}, onError: (e) => print(e));
-    if ( speechAvailable ) {
+    if (speechAvailable) {
       CurrentStatus.status = TalkStatus.user_talking;
-      speech.listen( onResult: resultListener );
+      speech.listen(onResult: resultListener);
     }
     else {
         print("The user has denied the use of speech recognition.");
@@ -45,12 +46,14 @@ class _TalkPageState extends State<TalkPage> {
   }
 
   resultListener(SpeechRecognitionResult result) {
+    print(result.recognizedWords);
+    userInput = userInput.length < result.recognizedWords.length ? result.recognizedWords : userInput;
     if(timer == null) {
-      timer = RestartableTimer(Duration(milliseconds: 900), () {
+      timer = RestartableTimer(Duration(milliseconds: 500), () {
         speech.cancel();
         CurrentStatus.status = TalkStatus.fetching_response;
-        print(result.recognizedWords);
-        OpenAIHandler.complete(result.recognizedWords);
+        print(userInput);
+        OpenAIHandler.complete(userInput);
       });
     }
     timer.reset();
@@ -61,7 +64,9 @@ class _TalkPageState extends State<TalkPage> {
     return Scaffold(
       body: Column(
         children: [
-          Visualizer()
+          Expanded(child: Container()),
+          Visualizer(),
+          Container(height: 10)
         ],
       ),
     );

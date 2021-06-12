@@ -5,7 +5,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 class OpenAIHandler {
   static OpenAI openAI = new OpenAI(apiKey: FlutterConfig.get('OPENAI_API_KEY'));
   static String currentText = 
-  "Sam: Hi Connor! I'm your therapist, Sam. What would you like to talk about?\nUser: ";
+  "Sam: Hi! I'm your therapist, Sam. What would you like to talk about?\nUser: ";
   static String aiResponse = '';
 
   static complete(String response) async {
@@ -23,7 +23,6 @@ class OpenAIHandler {
   static _playResponse() async {
     FlutterTts flutterTts = FlutterTts();
     await flutterTts.awaitSpeakCompletion(true);
-    var result = await flutterTts.speak(aiResponse);
-    print(result);
+    await flutterTts.speak(aiResponse);
   }
 }

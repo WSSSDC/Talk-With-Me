@@ -10,7 +10,7 @@ class Visualizer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 110,
       child: StreamBuilder(
         stream: CurrentStatus.status == TalkStatus.user_talking ? MicInput.noiseStream : null,
         builder: (context, snapshot) {
