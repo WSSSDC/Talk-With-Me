@@ -31,7 +31,7 @@ class Messages {
   }
 
   static List<Message> _messages = [
-    Message(false, welcomeStrings[new Random().nextInt(welcomeStrings.length - 1)])
+    //Message(false, welcomeStrings[new Random().nextInt(welcomeStrings.length - 1)])
   ];
 }
 

@@ -32,19 +32,24 @@ class _TalkPageState extends State<TalkPage> {
   }
 
   update() {
-    if(mounted) setState(() {});
-    if (SessionHandler.status == TalkStatus.user_talking) startSTT();
+    if(mounted) { 
+      setState(() {});
+      if (SessionHandler.status == TalkStatus.user_talking) startSTT();
+      if (SessionHandler.status == TalkStatus.not_running) endSession();
+    }
   }
 
   void initSTT() async {
     SessionHandler.status = TalkStatus.user_talking;
     speech = SpeechToText();
-    //if(!speechAvailable)
+    if(!speechAvailable)
     speechAvailable = await speech.initialize(onStatus: (s) {}, onError: (e) => print(e), finalTimeout: Duration(hours: 1));
     update();
   }
   
-  void startSTT() {
+  void startSTT() async {
+    speech = new SpeechToText();
+    speechAvailable = await speech.initialize(onStatus: (s) {}, onError: (e) => print(e), finalTimeout: Duration(hours: 1));
     if (speechAvailable && !speech.isListening) {
       speech.listen(onResult: resultListener);
     }
@@ -58,24 +63,28 @@ class _TalkPageState extends State<TalkPage> {
     if(timer == null) {
       timer = RestartableTimer(Duration(milliseconds: 750), () {
         if(userInput.toUpperCase().replaceAll(' ', '') != "CLOSE") {
-          speech.cancel();
           SessionHandler.status = TalkStatus.fetching_response;
+          speech.cancel();
+          speech = null;
           Messages.addMessage(Message(true, userInput));
           OpenAIHandler.complete(userInput);
           userInput = '';
         } else {
-          endSession();
+          SessionHandler.status = TalkStatus.not_running;
         }
+        //setState(() {});
       });
     }
     timer.reset();
   }
 
   endSession() {
-    speech.cancel();
+    if(speech != null) {
+      speech.cancel();
+      speech = null;
+    }
     userInput = '';
     Messages.messages = [];
-    SessionHandler.status = TalkStatus.not_running;
     if(OpenAIHandler.flutterTts != null)
     OpenAIHandler.flutterTts.stop();
     Navigator.pop(context);
@@ -102,7 +111,7 @@ class _TalkPageState extends State<TalkPage> {
                     width: 70,
                     height: 40,
                     child: GestureDetector(
-                      onTap: endSession,
+                      onTap: () => SessionHandler.status = TalkStatus.not_running,
                       child: Card(
                         elevation: 5.0,
                         shape: RoundedRectangleBorder(

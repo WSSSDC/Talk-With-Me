@@ -19,7 +19,7 @@ class _VisualizerState extends State<Visualizer> {
     return Container(
       height: 110,
       child: StreamBuilder(
-        stream: SessionHandler.status == TalkStatus.user_talking ? MicInput.noiseStream : Stream<LoadingStream>.periodic(Duration(milliseconds: 100), (x) => LoadingStream()..meanDecibel = (sin(x) + 1) * (sin(x) + 1) * 20),
+        stream: SessionHandler.status == TalkStatus.user_talking ? MicInput.noiseStream : Stream<LoadingStream>.periodic(Duration(milliseconds: 100), (x) => LoadingStream()..meanDecibel = (sin(x) + 1) * 50),
         builder: (context, snapshot) {
           if (snapshot.data == null) return Container();
           return Row(
@@ -45,7 +45,7 @@ class Bar extends StatelessWidget {
       //height: SessionHandler.status == TalkStatus.user_talking ? (live - sub).clamp(0, 100).toDouble() * 1.5 : 0,
       height: (live - sub).clamp(0, 100).toDouble() * 1.5,
       child: Card(
-        color: SessionHandler.status == TalkStatus.user_talking ? Colors.black : Colors.black38,
+        color: SessionHandler.status == TalkStatus.user_talking ? Colors.black : Colors.blue.withOpacity(0.5),
       ),
     );
   }

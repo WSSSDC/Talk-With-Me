@@ -8,11 +8,11 @@ import 'status-handler.dart';
 class OpenAIHandler {
   static OpenAI openAI = new OpenAI(apiKey: FlutterConfig.get('OPENAI_API_KEY'));
   static String defaultPrompt = 
-  "Sam: Hi " + ProfileData.first + "! I'm your therapist, Sam. What would you like to talk about?\nUser: ";
+  "Sam: Hi " + ProfileData.first + "! I'm your therapist, Sam. It's so nice to meet you! What would you like to talk about?\n" + (ProfileData.first.isEmpty ? 'User' : ProfileData.first) + ":";
   static String currentText = '';
   static String aiResponse = '';
   static FlutterTts flutterTts;
-  static List<String> endcodes = ["\n", "Sam:", "User:", "."];
+  static List<String> endcodes = ["\n", "Sam:", (ProfileData.first.isEmpty ? 'User' : ProfileData.first) + ":", "."];
 
   static complete(String response) async {
     currentText += response + "\Sam:";
@@ -21,16 +21,20 @@ class OpenAIHandler {
     endcodes.forEach((e) => removeAt(e));
 
     if(aiResponse.substring(0,1) == ' ') aiResponse = aiResponse.replaceFirst(' ', '');
-    currentText += aiResponse + '\n' + 'User:';
+    currentText += aiResponse + '\n' + (ProfileData.first.isEmpty ? 'User' : ProfileData.first) + ':';
     Messages.addMessage(Message(false, aiResponse));
     _playResponse();
   }
 
   static _playResponse() async {
     flutterTts = FlutterTts();
-    //await flutterTts.awaitSpeakCompletion(true);
+    await flutterTts.awaitSpeakCompletion(true);
     await flutterTts.speak(aiResponse);
-    SessionHandler.status = TalkStatus.user_talking;
+    if(aiResponse.toUpperCase().contains('BYE')) {
+      SessionHandler.status = TalkStatus.not_running;
+    } else {
+      SessionHandler.status = TalkStatus.user_talking;
+    }
   }
 
   static removeAt(String match) {
