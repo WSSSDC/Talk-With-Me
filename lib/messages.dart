@@ -2,13 +2,6 @@ import "dart:math";
 
 class Messages {
   static List<Function> listeners = [];
-  static var welcomeStrings = [
-    'Hello!',
-    'Bonjour!',
-    'Howdy!',
-    'Welcome!',
-    'Hey There!'
-  ];
 
   static addListener(Function update) {
     listeners.add(update);
@@ -17,6 +10,14 @@ class Messages {
   static notifyListeners() {
     listeners.forEach((e) => e());
   }
+
+  static var welcomeStrings = [
+    'Hello!',
+    'Bonjour!',
+    'Howdy!',
+    'Welcome!',
+    'Hey There!'
+  ];
 
   static List<Message> get messages => _messages;
   static set messages(List<Message> newlist) {

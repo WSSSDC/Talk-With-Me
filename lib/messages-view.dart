@@ -70,6 +70,7 @@ class MessageText extends StatelessWidget {
                   fontSize: 30,
                   color: fromUser ? Colors.black45 : Colors.black
                 ),
+                textAlign: fromUser ? TextAlign.right : TextAlign.left,
               ),
             ),
           )

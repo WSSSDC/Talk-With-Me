@@ -39,13 +39,13 @@ class _TalkPageState extends State<TalkPage> {
   void initSTT() async {
     SessionHandler.status = TalkStatus.user_talking;
     speech = SpeechToText();
-    if(!speechAvailable)
-    speechAvailable = await speech.initialize(onStatus: (s) => print('status: ' + s), onError: (e) => print(e), debugLogging: true);
+    //if(!speechAvailable)
+    speechAvailable = await speech.initialize(onStatus: (s) => print('status: ' + s), onError: (e) => print(e), finalTimeout: Duration(hours: 1));
     update();
   }
   
   void startSTT() {
-    if (speechAvailable) {
+    if (speechAvailable && !speech.isListening) {
       speech.listen(onResult: resultListener);
     }
     else {
@@ -54,10 +54,11 @@ class _TalkPageState extends State<TalkPage> {
   }
 
   resultListener(SpeechRecognitionResult result) {
-    print(result.recognizedWords);
+    //print(result.recognizedWords);
     userInput = userInput.length < result.recognizedWords.length ? result.recognizedWords : userInput;
     if(timer == null) {
       timer = RestartableTimer(Duration(milliseconds: 750), () {
+        print("CANCEL");
         speech.cancel();
         SessionHandler.status = TalkStatus.fetching_response;
         Messages.addMessage(Message(true, userInput));
@@ -69,6 +70,7 @@ class _TalkPageState extends State<TalkPage> {
   }
 
   endSession() {
+    print("END SESSION");
     speech.cancel();
     userInput = '';
     Messages.messages = [];

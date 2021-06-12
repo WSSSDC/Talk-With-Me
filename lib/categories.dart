@@ -9,10 +9,12 @@ class Categories {
       ..aiPrompt = "Can you tell me more about the issues you're having with your family?",
       TalkingItem()
       ..name = 'Breakup'
-      ..userPrompt = "I'm just went through a hard breakup",
+      ..userPrompt = "I'm just went through a hard breakup"
+      ..aiPrompt = "Sorry about your breakup. Can you tell me about it?",
       TalkingItem()
       ..name = 'Issues with Partner'
-      ..userPrompt = "I'm having issues with my partner",
+      ..userPrompt = "I'm having issues with my partner"
+      ..aiPrompt = "Can you tell me more about the issues you're having?"
     ],
     Category()
     ..name = 'Condition'
@@ -40,8 +42,9 @@ class Categories {
       ..name = 'Lack of purpose'
       ..userPrompt = "I've feel like my job doesn't give me a purpose",
       TalkingItem()
-      ..name = 'Layoff'
+      ..name = 'Recent Layoff'
       ..userPrompt = "I was recently fired"
+      ..aiPrompt = "Sorry to hear about your job. Can you talk about it?"
     ],
   ];
 }
