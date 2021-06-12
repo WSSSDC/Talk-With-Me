@@ -4,7 +4,7 @@ DOWNLOAD STUFF HERE
 # 💡 Inspiration
 We saw the capabilities of GPT-3 in the news and wanted to leverage its power for a practical application of our own. We also knew that therapy can sometimes be prohibitively expensive and wanted to lower the access barrier.
 
-#🏗 How we built it
+# 🏗 How we built it
 * Designed Mockups in Adobe XD
 * Talk With Me was made using Flutter with the help of the following libraries:
 * Used `gpt_3_dart` API for GPT-3 integration
