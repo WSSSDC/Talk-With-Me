@@ -16,7 +16,7 @@ class _TalkGroupState extends State<TalkGroup> {
         Row(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(15.0, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(18.0, 0, 0, 0),
               child: Text(
                 'Relationships',
                 style: Theme.of(context).textTheme.subtitle1,
@@ -37,7 +37,8 @@ class _TalkGroupState extends State<TalkGroup> {
             ],
             scrollDirection: Axis.horizontal,
           ),
-        )
+        ),
+        Container(height: 15),
       ],
     );
   }
@@ -50,14 +51,19 @@ class TalkCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 250,
-      child: Card(
-        elevation: 5.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),
-        ),
-        
-        child: Center(
-          child: Text('Test'),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 5.0, 10),
+        child: Card(
+          elevation: 5.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          child: Center(
+            child: Text(
+              'Test',
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
+          ),
         ),
       ),
     );

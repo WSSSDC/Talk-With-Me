@@ -20,12 +20,17 @@ class MyApp extends StatelessWidget {
           headline1: TextStyle(
             fontSize: 30,
             color: Colors.black,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             fontFamily: 'Gotham'
           ),
           subtitle1: TextStyle(
-            fontSize: 20,
+            fontSize: 22,
             color: Colors.black54,
+            fontWeight: FontWeight.w400
+          ),
+          subtitle2: TextStyle(
+            fontSize: 18,
+            color: Colors.black45,
             fontWeight: FontWeight.w400
           )
         )
@@ -51,14 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(18.0),
               child: Text(
                 'What would you like to talk about?',
                 style: Theme.of(context).textTheme.headline1,
               ),
             ),
             Container(height: 20),
-            TalkGroup()
+            TalkGroup(),
+            TalkGroup(),
+            TalkGroup(),
           ],
         ),
       ),
