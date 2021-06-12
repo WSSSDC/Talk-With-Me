@@ -17,6 +17,10 @@ We saw the capabilities of GPT-3 in the news and wanted to leverage its power fo
 * Switching from a game to an app, since we thought an app would be a more accessible form factor
 
 # 📖 What we learned
+* More APIs for flutter
+* Interfacing with GPT-3
+* Advanced Flutter Concepts
+* Adobe XD design
 
 # 💡 Future Improvements
 * Updates to UI to improve smoothness
