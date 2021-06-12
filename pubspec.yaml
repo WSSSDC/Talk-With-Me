@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  speech_to_text: ^4.2.1
   flutter_config: ^2.0.0
   gpt_3_dart: ^0.0.1
   flutter:
