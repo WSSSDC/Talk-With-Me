@@ -1,5 +1,5 @@
 # 📱 Get the app!
-DOWNLOAD STUFF HERE
+[DOWNLOAD]
 
 # 💡 Inspiration
 We saw the capabilities of GPT-3 in the news and wanted to leverage its power for a practical application of our own. We also knew that therapy can sometimes be prohibitively expensive and wanted to lower the access barrier.
@@ -12,9 +12,15 @@ We saw the capabilities of GPT-3 in the news and wanted to leverage its power fo
 * Used `flutter_tts` for text-to-speech
 
 # 🛑 Challenges we ran into
+* Audio vizualizer positioning and styling right
+* Getting microphone access
+* Getting GPT-3 to work
+* Making multiple voices to work
 
 # ✅ Accomplishments that we're proud of
 * Switching from a game to an app, since we thought an app would be a more accessible form factor
+* Finding a appropriate and consistent design philosophy
+* Being able to have GPT-3 give appropriate responses
 
 # 📖 What we learned
 * More APIs for flutter
@@ -24,9 +30,10 @@ We saw the capabilities of GPT-3 in the news and wanted to leverage its power fo
 
 # 💡 Future Improvements
 * Updates to UI to improve smoothness
+* Add animations to boost user experience
 * Add meditation feature with generative audio
 * Expand breadth of issues the therapist can handle
-
+* Improve training set
 
 # 🖼 Gallery
 
