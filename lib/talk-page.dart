@@ -18,7 +18,7 @@ class TalkPage extends StatefulWidget {
 }
 
 class _TalkPageState extends State<TalkPage> {
-  SpeechToText speech;
+  SpeechToText speech = SpeechToText();
   String userInput = '';
   bool speechAvailable = false;
   RestartableTimer timer;
@@ -41,15 +41,12 @@ class _TalkPageState extends State<TalkPage> {
 
   void initSTT() async {
     SessionHandler.status = TalkStatus.user_talking;
-    speech = SpeechToText();
     if(!speechAvailable)
-    speechAvailable = await speech.initialize(onStatus: (s) {}, onError: (e) => print(e), finalTimeout: Duration(hours: 1));
+    speechAvailable = await speech.initialize(onStatus: (s) {}, onError: (e) => print(e));
     update();
   }
   
   void startSTT() async {
-    speech = new SpeechToText();
-    speechAvailable = await speech.initialize(onStatus: (s) {}, onError: (e) => print(e), finalTimeout: Duration(hours: 1));
     if (speechAvailable && !speech.isListening) 
     speech.listen(onResult: resultListener);
   }
@@ -60,10 +57,7 @@ class _TalkPageState extends State<TalkPage> {
       timer = RestartableTimer(Duration(milliseconds: 750), () {
         if(userInput.toUpperCase().replaceAll(' ', '') != "CLOSE") {
           SessionHandler.status = TalkStatus.fetching_response;
-          if(speech != null) {
-            speech.cancel();
-            speech = null;
-          }
+          speech.cancel();
           Messages.addMessage(Message(true, userInput));
           OpenAIHandler.complete(userInput);
           userInput = '';
@@ -76,10 +70,7 @@ class _TalkPageState extends State<TalkPage> {
   }
 
   endSession() {
-    if(speech != null) {
-      speech.cancel();
-      speech = null;
-    }
+    speech.cancel();
     userInput = '';
     Messages.messages = [];
     if(OpenAIHandler.flutterTts != null)
