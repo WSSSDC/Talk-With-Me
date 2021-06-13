@@ -28,12 +28,10 @@ class OpenAIHandler {
 
   static _playResponse() async {
     flutterTts = FlutterTts();
-    List<dynamic> voices = await flutterTts.getVoices;
-    print(voices.where((e) => e['locale'].contains('en-')).map((e) => e['locale']));
     await flutterTts.setVoice(ProfileData.voices[ProfileData.voice]);
     await flutterTts.awaitSpeakCompletion(true);
     await flutterTts.speak(aiResponse);
-    if(aiResponse.toUpperCase().contains('BYE')) {
+    if(aiResponse.toUpperCase().contains('BYE') || aiResponse.toUpperCase().contains('SEE YOU LATER')) {
       SessionHandler.status = TalkStatus.not_running;
     } else {
       SessionHandler.status = TalkStatus.user_talking;

@@ -12,22 +12,25 @@ class Visualizer extends StatefulWidget {
 
 class _VisualizerState extends State<Visualizer> {
   final Random rng = new Random();
-  final List<double> fakeEQ = [70.0,65.0,60.0,50.0,48.0,50.0,60.0,65.0,70.0];
+  final List<double> fakeEQ = [70.0,65.0,63.0,60.0,50.0,48.0,50.0,60.0,63.0,65.0,70.0];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 110,
-      child: StreamBuilder(
-        stream: SessionHandler.status == TalkStatus.user_talking ? MicInput.noiseStream : Stream<LoadingStream>.periodic(Duration(milliseconds: 100), (x) => LoadingStream()..meanDecibel = (sin(x) + 1) * 50),
-        builder: (context, snapshot) {
-          if (snapshot.data == null) return Container();
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: fakeEQ.map((e) => Bar(snapshot.data.meanDecibel + (rng.nextDouble() * snapshot.data.meanDecibel / 50), e)).toList(),
-          );
-        },
-      )
+    return SafeArea(
+      child: Container(
+        height: 110,
+        child: StreamBuilder(
+          stream: SessionHandler.status == TalkStatus.user_talking ? MicInput.noiseStream : Stream<LoadingStream>.periodic(Duration(milliseconds: 100), (x) => LoadingStream()..meanDecibel = (sin(x) + 1) * 50),
+          builder: (context, snapshot) {
+            if (snapshot.data == null) return Container();
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: fakeEQ.map((e) => Bar(snapshot.data.meanDecibel + (rng.nextDouble() * snapshot.data.meanDecibel / 50), e)).toList(),
+            );
+          },
+        )
+      ),
     );
   }
 }
@@ -41,11 +44,14 @@ class Bar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 150),
-      width: 15,
+      width: 25,
       //height: SessionHandler.status == TalkStatus.user_talking ? (live - sub).clamp(0, 100).toDouble() * 1.5 : 0,
-      height: (live - sub).clamp(0, 100).toDouble() * 1.5,
+      height: (live - sub).clamp(0, 100).toDouble() * 1.8,
       child: Card(
         color: SessionHandler.status == TalkStatus.user_talking ? Colors.black : Colors.blue.withOpacity(0.5),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
       ),
     );
   }
