@@ -9,9 +9,8 @@ import 'visualizer-input.dart';
 import 'package:async/async.dart';
 import 'openai.dart';
 
-
 class TalkPage extends StatefulWidget {
-  const TalkPage({ Key key }) : super(key: key);
+  const TalkPage({Key key}) : super(key: key);
 
   @override
   _TalkPageState createState() => _TalkPageState();
@@ -32,7 +31,7 @@ class _TalkPageState extends State<TalkPage> {
   }
 
   update() {
-    if(mounted) { 
+    if (mounted) {
       setState(() {});
       if (SessionHandler.status == TalkStatus.user_talking) startSTT();
       if (SessionHandler.status == TalkStatus.not_running) endSession();
@@ -42,29 +41,37 @@ class _TalkPageState extends State<TalkPage> {
   void initSTT() async {
     SessionHandler.status = TalkStatus.user_talking;
     speech = SpeechToText();
-    if(!speechAvailable)
-    speechAvailable = await speech.initialize(onStatus: (s) {}, onError: (e) => print(e), finalTimeout: Duration(hours: 1));
+    if (!speechAvailable)
+      speechAvailable = await speech.initialize(
+          debugLogging: true,
+          onStatus: (s) {},
+          onError: (e) => print(e),
+          finalTimeout: Duration(hours: 1));
     update();
   }
-  
+
   void startSTT() async {
     speech = new SpeechToText();
-    speechAvailable = await speech.initialize(onStatus: (s) {}, onError: (e) => print(e), finalTimeout: Duration(hours: 1));
+    speechAvailable = await speech.initialize(
+        onStatus: (s) {},
+        onError: (e) => print(e),
+        finalTimeout: Duration(hours: 1));
     if (speechAvailable && !speech.isListening) {
       speech.listen(onResult: resultListener);
-    }
-    else {
+    } else {
       //print("The user has denied the use of speech recognition.");
     }
   }
 
   resultListener(SpeechRecognitionResult result) {
-    userInput = userInput.length < result.recognizedWords.length ? result.recognizedWords : userInput;
-    if(timer == null) {
+    userInput = userInput.length < result.recognizedWords.length
+        ? result.recognizedWords
+        : userInput;
+    if (timer == null) {
       timer = RestartableTimer(Duration(milliseconds: 750), () {
-        if(userInput.toUpperCase().replaceAll(' ', '') != "CLOSE") {
+        if (userInput.toUpperCase().replaceAll(' ', '') != "CLOSE") {
           SessionHandler.status = TalkStatus.fetching_response;
-          if(speech != null) {
+          if (speech != null) {
             speech.cancel();
             speech = null;
           }
@@ -81,14 +88,13 @@ class _TalkPageState extends State<TalkPage> {
   }
 
   endSession() {
-    if(speech != null) {
+    if (speech != null) {
       speech.cancel();
       speech = null;
     }
     userInput = '';
     Messages.messages = [];
-    if(OpenAIHandler.flutterTts != null)
-    OpenAIHandler.flutterTts.stop();
+    if (OpenAIHandler.flutterTts != null) OpenAIHandler.flutterTts.stop();
     Navigator.pop(context);
   }
 
@@ -98,40 +104,33 @@ class _TalkPageState extends State<TalkPage> {
       body: Stack(
         children: [
           Column(
-            children: [
-              MessagesView(),
-              Visualizer(),
-              Container(height: 10)
-            ],
+            children: [MessagesView(), Visualizer(), Container(height: 10)],
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 5.0, 15.0, 0),
             child: SafeArea(
               child: Align(
-                  alignment: Alignment.topRight,
-                  child: SizedBox(
+                alignment: Alignment.topRight,
+                child: SizedBox(
                     width: 70,
                     height: 40,
                     child: GestureDetector(
-                      onTap: () => SessionHandler.status = TalkStatus.not_running,
+                      onTap: () =>
+                          SessionHandler.status = TalkStatus.not_running,
                       child: Card(
                         elevation: 5.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         child: Center(
-                          child: Text(
-                            'End',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300
-                            ),
-                          )
-                        ),
+                            child: Text(
+                          'End',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w300),
+                        )),
                         color: Colors.red,
                       ),
-                    )
-                ),
+                    )),
               ),
             ),
           ),
