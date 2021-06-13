@@ -37,4 +37,4 @@ We saw the capabilities of GPT-3 in the news and wanted to leverage its power fo
 * Improve training set
 
 # 🙇‍♂️ Acknowledgements
-We want to thank everyone MasseyHacksVII for giving us this opportunity. We would also like to Dhruv Baronia for the OpenAI GPT-3 API.
+We want to thank everyone at MasseyHacks VII for giving us this opportunity, OpenAI for the amazing GPT-3 and finally, Google for developing Flutter). We would also like to Dhruv Baronia for the OpenAI GPT-3 API.
