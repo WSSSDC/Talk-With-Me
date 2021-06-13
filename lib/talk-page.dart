@@ -33,9 +33,9 @@ class _TalkPageState extends State<TalkPage> {
 
   update() {
     if(mounted) { 
-      setState(() {});
       if (SessionHandler.status == TalkStatus.user_talking) startSTT();
       if (SessionHandler.status == TalkStatus.not_running) endSession();
+      setState(() {});
     }
   }
 
@@ -50,12 +50,8 @@ class _TalkPageState extends State<TalkPage> {
   void startSTT() async {
     speech = new SpeechToText();
     speechAvailable = await speech.initialize(onStatus: (s) {}, onError: (e) => print(e), finalTimeout: Duration(hours: 1));
-    if (speechAvailable && !speech.isListening) {
-      speech.listen(onResult: resultListener);
-    }
-    else {
-      //print("The user has denied the use of speech recognition.");
-    }
+    if (speechAvailable && !speech.isListening) 
+    speech.listen(onResult: resultListener);
   }
 
   resultListener(SpeechRecognitionResult result) {
@@ -74,7 +70,6 @@ class _TalkPageState extends State<TalkPage> {
         } else {
           SessionHandler.status = TalkStatus.not_running;
         }
-        //setState(() {});
       });
     }
     timer.reset();
@@ -94,48 +89,54 @@ class _TalkPageState extends State<TalkPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              MessagesView(),
-              Visualizer(),
-              Container(height: 10)
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 5.0, 15.0, 0),
-            child: SafeArea(
-              child: Align(
-                  alignment: Alignment.topRight,
-                  child: SizedBox(
-                    width: 70,
-                    height: 40,
-                    child: GestureDetector(
-                      onTap: () => SessionHandler.status = TalkStatus.not_running,
-                      child: Card(
-                        elevation: 5.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+    return WillPopScope(
+      onWillPop: () async {
+        SessionHandler.status = TalkStatus.not_running;
+        return true;
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                MessagesView(),
+                Visualizer(),
+                Container(height: 10)
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5.0, 15.0, 0),
+              child: SafeArea(
+                child: Align(
+                    alignment: Alignment.topRight,
+                    child: SizedBox(
+                      width: 70,
+                      height: 40,
+                      child: GestureDetector(
+                        onTap: () => SessionHandler.status = TalkStatus.not_running,
+                        child: Card(
+                          elevation: 5.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'End',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300
+                              ),
+                            )
+                          ),
+                          color: Colors.red,
                         ),
-                        child: Center(
-                          child: Text(
-                            'End',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300
-                            ),
-                          )
-                        ),
-                        color: Colors.red,
-                      ),
-                    )
+                      )
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

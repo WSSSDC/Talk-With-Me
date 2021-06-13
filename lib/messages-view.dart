@@ -40,7 +40,7 @@ class _MessagesViewState extends State<MessagesView> {
           child: ListView(
             reverse: true,
             controller: _scrollController,
-            children: Messages.messages.map((e) => MessageText(e.fromUser, e.message)).toList(),
+            children: <Widget>[Container(height: 30)] + Messages.messages.map((e) => MessageText(e.fromUser, e.message)).toList(),
           ),
         ),
       ),

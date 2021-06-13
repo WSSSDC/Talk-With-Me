@@ -1,3 +1,5 @@
+import 'profile-data.dart';
+
 class Categories {
   static List<Category> groups = [
     Category()
@@ -6,7 +8,7 @@ class Categories {
       TalkingItem()
       ..name = 'Family'
       ..userPrompt = "I'm having issues with my family"
-      ..aiPrompt = "Can you tell me more about the issues you're having with your family?",
+      ..aiPrompt = "I'm here to help. Can you tell me more about your family?",
       TalkingItem()
       ..name = 'Breakup'
       ..userPrompt = "I'm just went through a hard breakup"
@@ -18,7 +20,7 @@ class Categories {
       TalkingItem()
       ..name = 'Friends'
       ..userPrompt = "I'm having problems with my friends"
-      ..aiPrompt = "Can you tell me more about the issues you're having?"
+      ..aiPrompt = "I want to help. Can you tell me more about your issues?"
     ],
     Category()
     ..name = 'Condition'
@@ -49,6 +51,12 @@ class Categories {
       ..name = 'Recent Layoff'
       ..userPrompt = "I was recently fired"
       ..aiPrompt = "Sorry to hear about your job. Can you talk about it?"
+    ],
+    Category()
+    ..name = 'Open'
+    ..items = [
+      TalkingItem()
+      ..name = 'Have a chat'
     ],
   ];
 }

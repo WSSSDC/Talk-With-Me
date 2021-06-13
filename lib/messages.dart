@@ -1,4 +1,5 @@
 import "dart:math";
+import 'profile-data.dart';
 
 class Messages {
   static List<Function> listeners = [];
@@ -32,6 +33,7 @@ class Messages {
 
   static List<Message> _messages = [
     //Message(false, welcomeStrings[new Random().nextInt(welcomeStrings.length - 1)])
+    //Message(false, "Hi, I'm " + ProfileData.voiceName)
   ];
 }
 

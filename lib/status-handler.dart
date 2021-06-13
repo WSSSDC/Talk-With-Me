@@ -25,8 +25,13 @@ class SessionHandler {
   static TalkStatus _status = TalkStatus.user_talking;
 
   static startSession(TalkingItem item) {
-    OpenAIHandler.currentText = OpenAIHandler.defaultPrompt + item.userPrompt + '\n' + ProfileData.voiceName + ': ' + item.aiPrompt + '\n' + (ProfileData.first.isEmpty ? 'User' : ProfileData.first) + ':';
-    Messages.addMessage(Message(false, item.aiPrompt));
+    if(item.name != "Have a chat") {
+      OpenAIHandler.currentText = OpenAIHandler.defaultPrompt + item.userPrompt + '\n' + ProfileData.voiceName + ': ' + item.aiPrompt + '\n' + (ProfileData.first.isEmpty ? 'User' : ProfileData.first) + ':';
+      Messages.addMessage(Message(false, item.aiPrompt));
+    } else {
+      OpenAIHandler.currentText = ProfileData.voiceName + ": Hi " + ProfileData.first + "! I'm your therapist, " + ProfileData.voiceName + ". It's so nice to meet you!\n" + (ProfileData.first.isEmpty ? 'User' : ProfileData.first) + ":";
+      Messages.addMessage(Message(false, "Hi " + ProfileData.first + "! I'm your therapist, " + ProfileData.voiceName + ". It's so nice to meet you!"));
+    }
     _status = TalkStatus.user_talking;
     notifyListeners();
   }

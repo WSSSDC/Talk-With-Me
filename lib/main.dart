@@ -70,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: ListView(
           children: <Widget>[
             Padding(
