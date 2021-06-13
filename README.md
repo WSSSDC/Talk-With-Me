@@ -1,6 +1,3 @@
-# 📱 Get the app!
-[DOWNLOAD]
-
 # 💡 Inspiration
 We saw the capabilities of GPT-3 in the news and wanted to leverage its power for a practical application of our own. We also knew that therapy can sometimes be prohibitively expensive and wanted to lower the access barrier.
 
